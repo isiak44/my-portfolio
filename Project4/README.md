@@ -1,12 +1,13 @@
 # Project 4 -- WEB Stack Implementation (LEMP Stack)
----
 
 In this project, we will deploy a LEMP stack web application on an AWS Cloud server.
 However, LEMP means Linux, Enginx, Mysql, PHP/Python, or Perl. 
 
+LEMP stack is a solution stack used in deploying web applications, unlike LAMP we use Nginx as the web server for hosting web applications. 
+
 ## Launch EC2 Instance on Terminal with SSH
 
-In Order to connect to this EC2. we use the SSH and private key pair in my download folder. 
+In Order to connect to this ec2. we `cd` into the directory containing the downloaded keypair and run the below code. 
 
 `ssh -i isiak_ec2.pem ubuntu@ec2-172-31-44-245.eu-north-1.commute.amazonaws.com`
 
@@ -21,8 +22,6 @@ First, we update our firewall with `sudo apt update`
 After the update, the terminal wants me to upgrade some packages. 
 
 ![sudo-apt-upgrade](images/sudo-apt-upgrade.png)
-
----
 
 ## Installing Nginx Web Server
 
@@ -48,14 +47,11 @@ To access our nginx page locally in our Ubuntu shell we use curl `http://localho
 
 ![curl-localhost](images/curl-localhost.png)
 
-
 `http://<Public-IP-Address>:80`
 
 Here we test how the nginx http server can respond to requests from the internet by opening a web browser and running the ec2 public address. 
 
 ![web-nginx](images/web-nginx.png)
-
----
 
 ## Installing MySQL
 
@@ -149,7 +145,7 @@ this command opens a new file, and then we paste the code below inside it ;
 
 ![projectLEMP-config](images/projectLEMP-config.png)
 
-After creating the projectLEMP config file in sites-available, we then link it to sites-enabled directory.
+After creating the projectLEMP config file in `/etc/nginx/sites-available`, we then link it to `/etc/nginx/sites-enabled` directory.
 
 `sudo ln -s /etc/nginx/sites-available/projectLEMP /etc/nginx/sites-enabled/`
 
@@ -181,8 +177,6 @@ Now we check our website with the system browser using the public ip address and
 
 ![web-nginx-index html](images/web-nginx-index.html.png)
 
----
-
 ### Testing PHP with Nginx
 
 In order to test PHP with Nginx we created a new file index.php in our web host projectLEMP and then pasted this PHP code 
@@ -192,15 +186,13 @@ phpinfo();`.
 
 `nano /var/www/projectLEMP/index.php`
 
-![nano-index php](https://github.com/isiak44/RasheedPBL/assets/27869977/155dd4a1-6d81-44a2-8f19-ff78413cbbf5)
+![nano-index-php](images/nano-index.php.png)
 
 `http://`public_IP`/index.php`
 
-![web-php](https://github.com/isiak44/RasheedPBL/assets/27869977/833fe500-7e39-4662-a428-1e7f72844f69)
+![web-php](images/web-php.png)
 
 `sudo rm /var/www/your_domain/index.php`
-
----
 
 ## Retrieving Data from MySQL Database with PHP
 

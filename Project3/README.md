@@ -3,15 +3,22 @@
 In this project, we will deploy a LAMP stack web application on AWS Cloud server.
 However, LAMP means Linux, Apache, Mysql, and PHP/Python or Perl. 
 
+Lamp stack is a solution stack used in deploying web applications, linux is the operating system, Apache is a web server software, 
+
+MySQL creates and maintain dynamic database, while 
+
+PHP, PERL/ PYTHON represent the programming language used make web application contents. 
+
 ---
 
 ## EC2 Instance on AWS
 
-First we created an ubutu linux operating system on our AWS server which is also called ec2 as shown below
+First we create an EC2 ubuntu VM instance on our AWS server and when creating an instance we created a new keypair 'isiakec2.pem` on 
+our local computer.
 
 ![ec2_ubuntu](images/ec2_ubuntu.png)
 
-In Order to connect to this ec2. we use the ssh and private key pair which is in my download folder. 
+In Order to connect to this ec2. we `cd` into the directory containing the downloaded keypair and run the below code. 
 
 `ssh -i isiak_ec2.pem ubuntu@ec2-13-53-106-58.eu-north-1.commute.amazonaws.com`
 
@@ -35,7 +42,7 @@ First we update our firewall with
 
 `sudo apt upgrade`
 
-After the update, the terminal wants me to upgrade some packages. 
+After the update, the terminal prompts to upgrade some packages. 
 
 ![sudo-apt-upgrade](images/sudo-apt-upgrade.png)
 
@@ -47,17 +54,20 @@ In order to Deployour website, we install apache with the ubuntu package manager
 
 `sudo systemctl status apache2`
 
-After successful installation we use this command to check the status of apache and here it shows running which means apache2 is active and ready to launch our first web server.
+After successful installation we use this command to check the status of apache and here it shows running highlighted in green which means apache2 is active and ready to launch our first web server.
 
 ![systemctl-status-apache2](images/systemctl-status-apache2.png)
 
+
 ### Configuring Security Group Inbound Rules on Ec2 Instance
+
+A security group act as a virtual firewall to the type of traffic that enters (inbound traffic) and leaves (outbound traffic) am instance)
 
 In order to access our apache website locally from the internet with any public ip address, we create an inbound rule on aws ec2 security group settings and set http rule, port 80 and source 0.0.0.0/0 means from any IP address. 
 
 ![Inboundrules](images/Inboundrules.png)
 
-`curl http://localhost:80`
+ `curl http://localhost:80` or `curl http://127.0.0.1:80`
 
 And to access this apache page locally in our ubuntu shell we use curl `http://localhost:80`
 
@@ -119,6 +129,8 @@ This command prints our php version.
 
 ## Enbling PHP on the website
 
+In order to launch our php page on apache, we modified the dir.conf file from `index.html` to `inde.php` to allow index.php become our default apache page.
+
 `sudo vim /etc/apache2/mods-enabled/dir.conf`
 
 ![sudo-vim-dir-config](images/sudo-vim-dir.conf.png)
@@ -161,13 +173,17 @@ then we paste the PHP code to the index.php file in projectlamp host.
 
 ## Creating a virtual host for the website using apache
 
+By default Apache has one server block enabled that is configured to serve documents from the `/var/www/html` directory. 
+
+In the `/var/www/` directory, we create a new directory called projectlamp
+
 `sudo mkdir /var/www/projectlamp`
 
 ![mkdir-projectlamp](images/mkdir-projectlamp.png)
 
 `sudo chown -R $USER:$USER /var/www/projectlamp`
 
-then we assign owner of projectlamp to current system user.
+then we assign ownership of projectlamp directory to current system user.
 
 ![sudo-chown-R](images/sudo-chown-R.png)
 
@@ -184,7 +200,7 @@ After that we then create an empty file called `projectlamp.conf`
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>` 
 
-then we copy this code above to `projectlamp.conf`
+then we copy the above code to `projectlamp.conf`
 
 ![sudo-vim-projectlamp-conf](images/sudo-vim-projectlamp-conf.png)
 
